@@ -1,7 +1,7 @@
 <template>
 <div>
   <el-card style="width: 50%">
-    <el-form :model="user" label-width="80px" :rules="rules" style="padding-right: 20px">
+    <el-form :model="user" label-width="80px" :rules="rules" style="padding-right: 20px"><!--表单-->
       <div style="margin: 15px; text-align: center">
         <el-upload
             class="avatar-uploader"

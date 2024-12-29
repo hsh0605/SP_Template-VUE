@@ -28,7 +28,7 @@
       <el-form-item>
         <el-radio-group v-model="user.role">
           <el-radio label="1">用户</el-radio>
-          <el-radio label="2">商家</el-radio>
+          <el-radio label="0">商家</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item>

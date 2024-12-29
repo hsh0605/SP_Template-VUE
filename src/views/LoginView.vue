@@ -90,6 +90,21 @@ export default {
 
   },
   methods:{
+    handleForgetPass() { //初始化表单的数据
+      this.forgetUserForm = {}
+      this.forgetPassDialogVis = true
+    },
+    resetPassword(){
+      this.$request.put('/password',this.forgetUserForm).then(res => {
+        if (res.code === '200'){
+          this.$message.success('重置成功')
+          this.forgetPassDialogVis = false
+        } else {
+          this.$message.error(res.msg)
+        }
+      })
+    },
+
     getCode(code){
       this.code = code.toLowerCase()
     },
