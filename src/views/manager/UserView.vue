@@ -21,7 +21,7 @@
     <el-table-column prop="address" label="地址" align="center"></el-table-column>
     <el-table-column label="头像" align="center">
       <template v-slot="scope">
-        <div style="display: flex; align-items: center">
+        <div style="display: flex; margin-left: 30%; align-items: center"> <!-- margin-left调整图片显示位置-->
           <el-image style="width: 50px; height: 50px; border-radius: 50%" v-if="scope.row.avatar" :src="scope.row.avatar" :preview-src-list="scope.row.avatar"></el-image>
         </div>
       </template>
