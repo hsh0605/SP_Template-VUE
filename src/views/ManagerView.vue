@@ -29,6 +29,7 @@
         </div>
         <el-menu
           :collapse="isCollapse"
+          :default-openeds="['info']"
           :collapse-transition="false"
           router
           background-color="#001529"
@@ -44,9 +45,16 @@
           <el-submenu index="info" v-if="user.role === '0'"> <!--v-if‘’控制访问权限-->
             <template slot="title">
               <i class="el-icon-menu"></i>
-              <span>信息管理</span>
+              <span>用户信息管理</span>
             </template>
             <el-menu-item index="/userView"> 用户信息 </el-menu-item>
+          </el-submenu>
+          <el-submenu index="info1" >
+            <template slot="title">
+              <i class="el-icon-menu"></i>
+              <span>路段信息管理</span>
+            </template>
+            <el-menu-item index="/roadView"> 路段信息 </el-menu-item>
           </el-submenu>
         </el-menu>
       </el-aside>

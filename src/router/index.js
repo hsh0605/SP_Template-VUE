@@ -9,6 +9,7 @@ import AuthView from "@/views/manager/AuthView.vue";
 import Error404PageView from "@/views/Error404PageView.vue";
 import PersonView from "@/views/manager/PersonView.vue";
 import PasswordView from "@/views/manager/PasswordView.vue";
+import RoadView from "@/views/manager/RoadView.vue";
 
 // 解决导航栏或者底部导航tabBar中的vue-router在3.0版本以上频繁点击菜单报错的问题。
 const originalPush = VueRouter.prototype.push
@@ -46,6 +47,12 @@ const routes = [
         name: 'PasswordView',
         meta: {name:'修改密码'},
         component: PasswordView
+      },
+      {
+        path: 'RoadView',
+        name: 'RoadView',
+        meta: {name:'路段信息'},
+        component: RoadView
       }
     ]
   },
