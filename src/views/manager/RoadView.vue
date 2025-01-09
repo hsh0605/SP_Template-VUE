@@ -257,12 +257,6 @@ export default {
       //this.pageNum = pageNum
       this.load(pageNum)
     },
-    // handleAvatarSuccess(response,file,fileList){
-    //   //把road的头像换成上传的图片的链接
-    //   console.log(file)
-    //   console.log(fileList)
-    //   this.form.avatar = response.data
-    // },
   },
 }
 </script>
