@@ -49,6 +49,13 @@
             </template>
             <el-menu-item index="/userView"> 用户信息 </el-menu-item>
           </el-submenu>
+          <el-submenu index="info2" v-if="user.role === '0'"> <!--v-if‘’控制访问权限-->
+            <template slot="title">
+              <i class="el-icon-menu"></i>
+              <span>公告栏管理</span>
+            </template>
+            <el-menu-item index="/noticeView"> 系统公告 </el-menu-item>
+          </el-submenu>
           <el-submenu index="info1" >
             <template slot="title">
               <i class="el-icon-menu"></i>
