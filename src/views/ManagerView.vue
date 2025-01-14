@@ -48,6 +48,7 @@
               <span>用户信息管理</span>
             </template>
             <el-menu-item index="/userView"> 用户信息 </el-menu-item>
+            <el-menu-item index="/LogsView"> 日志信息 </el-menu-item>
           </el-submenu>
           <el-submenu index="info2" v-if="user.role === '0'"> <!--v-if‘’控制访问权限-->
             <template slot="title">
