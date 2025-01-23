@@ -22,8 +22,8 @@
             style="width: 40px; height: 40px"
           />
           <transition name="el-fade-in">
-            <span style="margin-left: 5px; font-size: 20px" v-show="!isCollapse"
-              >vue模板系统</span
+            <span style="margin-left: 5px; font-size: 15px" v-show="!isCollapse"
+              >城宏园林综合管理系统</span
             >
           </transition>
         </div>
@@ -39,7 +39,7 @@
           :default-active="$route.path"
         >
           <el-menu-item index="/homeView">
-            <i class="el-icon-s-house"></i>
+            <i class="el-icon-s-home"></i>
             <span slot="title">系统首页</span>
           </el-menu-item>
           <el-submenu index="info" v-if="user.role === '0'"> <!--v-if‘’控制访问权限-->
@@ -63,6 +63,21 @@
               <span>路段信息管理</span>
             </template>
             <el-menu-item index="/roadView"> 路段信息 </el-menu-item>
+          </el-submenu>
+          <el-submenu index="info3" >
+            <template slot="title">
+              <i class="el-icon-menu"></i>
+              <span>数据统计</span>
+            </template>
+            <el-menu-item index="/chartsView"> 路段信息 </el-menu-item>
+          </el-submenu>
+          <el-submenu index="info4" >
+            <template slot="title">
+              <i class="el-icon-menu"></i>
+              <span>绿化信息管理</span>
+            </template>
+            <el-menu-item index="/gprsView"> 绿化修剪信息 </el-menu-item>
+            <el-menu-item index="/iogwView"> 绿化洒水信息 </el-menu-item>
           </el-submenu>
         </el-menu>
       </el-aside>
@@ -133,6 +148,9 @@ export default {
     }
   },
   mounted(){//页面加载完成后触发
+    if (!this.user.id) {   // 当前的浏览器没有用户信息
+      this.$router.push('/login')
+    }
 
   },
   methods: {

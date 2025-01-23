@@ -1,7 +1,8 @@
 <template>
 <div>
   <div>
-    <el-input style="width: 200px" placeholder="查询标题" v-model="title"></el-input>
+    <el-input style="width: 200px" placeholder="查询作业地点" v-model="opsite"></el-input>
+    <el-input style="width: 200px; margin: 0 5px" placeholder="查询作业对象" v-model="optarget"></el-input>
     <el-button type="primary" @click="load(1)">查询</el-button>
     <el-button type="info" @click="reset">重置</el-button>
   </div>
@@ -9,20 +10,22 @@
     <el-button type="primary" plain @click="handleAdd">新增</el-button>
     <el-button type="danger" plain @click="delBatch">批量删除</el-button>
 <!--    <el-button type="info" plain @click="exportData">批量导出</el-button>-->
-<!--    <el-upload action="http://localhost:8080/road/import" :headers="{token: road.token}" :on-success="handleImport" style="display: inline-block; margin-left: 10px" :show-file-list="false">-->
+<!--    <el-upload action="http://localhost:8080/gprs/import" :headers="{token: gprs.token}" :on-success="handleImport" style="display: inline-block; margin-left: 10px" :show-file-list="false">-->
 <!--      <el-button type="primary" plain @click="importData">批量导入</el-button>-->
 <!--    </el-upload>-->
   </div>
   <el-table :data="tableData" stripe :header-cell-style="{ backgroundColor: 'aliceblue', color:'#666'}" @selection-change="handleSelectionChange">
     <el-table-column type="selection" width="70" align="center"></el-table-column><!-- 多选框-->
     <el-table-column prop="id" label="序号" width="55" align="center"></el-table-column>
-    <el-table-column prop="title" label="标题" align="center"></el-table-column>
-    <el-table-column prop="description" label="简介" align="center"></el-table-column>
+    <el-table-column prop="optime" label="作业时间" align="center"></el-table-column>
+    <el-table-column prop="opsite" label="作业地点" align="center"></el-table-column>
+    <el-table-column prop="optarget" label="作业对象" align="center"></el-table-column>
     <el-table-column prop="content" label="内容" align="center" >
       <template v-slot="scope">
         <el-button @click="showContent(scope.row.content)" size="mini">显示内容</el-button>
       </template>
     </el-table-column>
+    <el-table-column prop="oppe" label="作业人员" align="center"></el-table-column>
     <el-table-column prop="authorid" label="发布人ID" align="center"></el-table-column>
     <el-table-column prop="time" label="发布时间" align="center"></el-table-column>
     <el-table-column label="操作" align="center" width="180">
@@ -42,18 +45,24 @@
     </el-pagination>
   </div>
 
-  <el-dialog title="路段信息" :visible.sync="fromVisible" width="60%" @close="closeDialog">
+  <el-dialog title="绿化修建" :visible.sync="fromVisible" width="60%" @close="closeDialog">
     <el-form :model="form" label-width="80px" style="padding-right: 20px" :rules="rules" ref="formRef">
 
-      <el-form-item label="标题" prop="title">
-        <el-input v-model="form.title" placeholder="标题"></el-input>
+      <el-form-item label="作业时间" prop="optime">
+        <el-input v-model="form.optime" placeholder="作业时间"></el-input>
       </el-form-item>
-      <el-form-item label="简介" prop="description">
-        <el-input v-model="form.description" placeholder="简介"></el-input>
+      <el-form-item label="作业地点" prop="opsite">
+        <el-input v-model="form.opsite" placeholder="作业地点"></el-input>
+      </el-form-item>
+      <el-form-item label="作业对象" prop="optarget">
+        <el-input v-model="form.optarget" placeholder="作业对象"></el-input>
       </el-form-item>
       <el-form-item label="内容" prop="content">
 <!--        <el-input v-model="form.content" placeholder="内容"></el-input>-->
         <div id="editor"></div>
+      </el-form-item>
+      <el-form-item label="作业人员" prop="oppe">
+        <el-input v-model="form.oppe" placeholder="作业人员"></el-input>
       </el-form-item>
 <!--      <el-form-item label="发布人ID" prop="authorid">-->
 <!--        <el-input v-model="form.authorid" placeholder="内容"></el-input>-->
@@ -82,7 +91,7 @@
 <script>
 import E from "wangeditor"
 export default {
-  name: "RoadView",
+  name: "GprsView",
   data(){
     return{
       tableData:[], //所有数据
@@ -90,13 +99,20 @@ export default {
       pageSize:5, //每页显示个数
       username:'',
       title:'',
+      optime:'',
+      opsite:'',
+      optarget:'',
+      oppe:'',
       total:0,
       fromVisible: false,
       form:{},
       user: JSON.parse(localStorage.getItem('current-user') || '{}'),
-      rules:{
-        title:[{
-          required: true , message: '请输入标题', trigger: 'blur'
+      rules:{//校验
+        opsite:[{
+          required: true , message: '请输入作业地点', trigger: 'blur'
+        },],
+        optarget:[{
+          required: true , message: '请输入作业对象', trigger: 'blur'
         },]
       },
       ids:[],
@@ -119,7 +135,7 @@ export default {
     // },
     // exportData(){ //批量导出数据
     //   if(!this.ids.length){ //没有选择行的时候,全部导出,或者根据我的搜索条件导出
-    //     window.open('http://localhost:8080/road/export?token='+this.road.token)
+    //     window.open('http://localhost:8080/gprs/export?token='+this.gprs.token)
     //   }
     // },
     showContent(content){
@@ -139,7 +155,7 @@ export default {
         return
       }
       this.$confirm('您确认批量删除吗？', '确认删除', {type: "warning"}).then(() => {
-        this.$request.delete('/road/delete/batch', {data : this.ids}).then(res => {
+        this.$request.delete('/gprs/delete/batch', {data : this.ids}).then(res => {
           if (res.code === '200') {   // 表示操作成功
             this.$message.success('删除成功')
             this.load(1)
@@ -156,7 +172,7 @@ export default {
     },
     del(id) {
       this.$confirm('您确认删除吗？', '确认删除', {type: "warning"}).then(() => {
-        this.$request.delete('/road/delete/' + id).then(res => {
+        this.$request.delete('/gprs/delete/' + id).then(res => {
           if (res.code === '200') {   // 表示操作成功
             this.$message.success('删除成功')
             this.load(1)
@@ -217,7 +233,7 @@ export default {
 
 
           this.$request({
-            url:this.form.id ? '/road/update' : '/road/add',
+            url:this.form.id ? '/gprs/update' : '/gprs/add',
             method:this.form.id ? 'PUT': 'POST',
             data:this.form
           }).then(res => {
@@ -233,19 +249,21 @@ export default {
       })
     },
     reset(){ //重置
-      this.title = ''
-      // this.roadname = ''
+      this.opsite = ''
+      this.optarget = ''
+      // this.gprsname = ''
       this.load()
     },
     load(pageNum){ //分页查询
       if (pageNum){
         this.pageNum = pageNum
       }
-      this.$request.get('/road/selectByPage', {
+      this.$request.get('/gprs/selectByPage', {
         params:{
           pageNum:this.pageNum,
           pageSize:this.pageSize,
-          title:this.title
+          opsite:this.opsite,
+          optarget:this.optarget
         }
       }).then(res => {
         this.tableData = res.data.list

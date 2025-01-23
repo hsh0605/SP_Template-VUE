@@ -12,6 +12,9 @@ import PasswordView from "@/views/manager/PasswordView.vue";
 import RoadView from "@/views/manager/RoadView.vue";
 import NoticeView from "@/views/manager/NoticeView.vue";
 import LogsView from "@/views/manager/LogsView.vue";
+import ChartsView from "@/views/manager/ChartsView.vue";
+import GprsView from "@/views/manager/GprsView.vue";
+import IogwView from "@/views/manager/IogwView.vue";
 
 // 解决导航栏或者底部导航tabBar中的vue-router在3.0版本以上频繁点击菜单报错的问题。
 const originalPush = VueRouter.prototype.push
@@ -67,7 +70,27 @@ const routes = [
         name: 'LogsView',
         meta: {name: '记录日志'},
         component: LogsView
+      },
+      {
+        path: 'ChartsView',
+        name: 'ChartsView',
+        meta: {name:'数据统计'},
+        component: ChartsView
+      },
+      {
+        path: 'GprsView',
+        name: 'GprsView',
+        meta: {name: '绿化修建'},
+        component: GprsView
+      },
+      {
+        path: 'IogwView',
+        name:'IogwView',
+        meta:{name:'绿化洒水'},
+        component: IogwView
       }
+
+
     ]
   },
   {
